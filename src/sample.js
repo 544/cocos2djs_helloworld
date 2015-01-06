@@ -22,7 +22,6 @@ var Sample = cc.Layer.extend ({
 			this.enemies.push(enemy);
 		}
 		
-		//this.setTouchEnabled(true);
 		this.scheduleUpdate();
 		 
 		return true;

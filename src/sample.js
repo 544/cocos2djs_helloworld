@@ -4,6 +4,8 @@
 var Sample = cc.Layer.extend ({
 	init:function () {
 		this._super();
+		var _this = this;
+
 		var size = cc.Director.getInstance().getWinSize();
 		
 		// 宇宙船
@@ -21,7 +23,20 @@ var Sample = cc.Layer.extend ({
 			this.addChild(enemy, 10);
 			this.enemies.push(enemy);
 		}
-		
+
+		// タッチイベントを設定
+		cc.eventManager.addListener(
+			cc.EventListener.create({
+				event: cc.EventListener.TOUCH_ALL_AT_ONCE,
+				onTouchesBegan: function(touches, event){
+					_this.touched = touches[0].getLocation();
+				},
+				onTouchesMoved: function(touches, event){
+					_this.touched = touches[0].getLocation();
+				},
+		}), this);
+
+		// 定期的にthis.updateメソッドを呼ぶ
 		this.scheduleUpdate();
 		 
 		return true;
@@ -34,19 +49,22 @@ var Sample = cc.Layer.extend ({
 			pos = cc.p(pos.x, pos.y); // getPositionの結果をそのまま変更するとエラー
 			pos.x += enemy.v.x;
 			pos.y += enemy.v.y;
-			
+
 			// 画面から出ないように
 			if (pos.x < 0) pos.x = size.width;
 			if (pos.y < 0) pos.y = size.height;
 			if (pos.y > size.height) pos.y = 0;
 			enemy.setPosition(pos);
 		}
+		// 船の位置を調整
+		var shipPos = this.ship.getPosition();
+		if (this.touched) {
+			var k = 0.7;
+			shipPos.y = (shipPos.y * k) + (this.touched.y * (1.0 - k));
+			this.ship.setPosition(shipPos);
+		}
 	},
-	
-	onTouchesBegan:function(touches, event){ cc.log("hoge");},
-	onTouchesMoves:function(touches, event){cc.log("hoge");},
-	onTouchesEnded:function(touches, event){cc.log("hoge");},
-	onTouchesCancelled:function(touches, event){cc.log("hoge");},
+					
 })
 
 // Scene

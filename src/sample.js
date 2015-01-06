@@ -31,7 +31,7 @@ var Sample = cc.Layer.extend ({
 		for (var i=0; i < this.enemies.length; i++) {
 			var enemy = this.enemies[i];
 			var pos = enemy.getPosition();
-			pos = cc.p(pos.x, pos.y);
+			pos = cc.p(pos.x, pos.y); // getPositionの結果をそのまま変更するとエラー
 			pos.x += enemy.v.x;
 			pos.y += enemy.v.y;
 			

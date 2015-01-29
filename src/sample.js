@@ -63,6 +63,14 @@ var Sample = cc.Layer.extend ({
 			shipPos.y = (shipPos.y * k) + (this.touched.y * (1.0 - k));
 			this.ship.setPosition(shipPos);
 		}
+
+		for (var i = 0; i < this.enemies.length; i++) {
+			var enemy = this.enemies[i];
+			var distance = cc.pDistance(shipPos, enemy.getPosition() );
+			if ( distance < 25 ) {
+				cc.log("HIT!!!");
+			}
+		}
 	},
 					
 })

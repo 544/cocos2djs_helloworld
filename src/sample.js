@@ -64,13 +64,24 @@ var Sample = cc.Layer.extend ({
 			this.ship.setPosition(shipPos);
 		}
 
+		// 当たり判定
 		for (var i = 0; i < this.enemies.length; i++) {
 			var enemy = this.enemies[i];
 			var distance = cc.pDistance(shipPos, enemy.getPosition() );
 			if ( distance < 25 ) {
 				cc.log("HIT!!!");
+				if (!this.gameover) {
+					this.gameover = true;
+					this.onGameover();
+				}
 			}
 		}
+		g.score++;
+	},
+
+	onGameover:function() {
+		var transition = cc.TransitionFade.create(1.0, new ResultScore());
+		cc.Director.getInstance.replaceScene(transition);
 	},
 					
 })
